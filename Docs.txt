@@ -43,20 +43,22 @@ NB. Below is listed the functionality absolutely necessary for the user stories,
 4. Get Word (by Base)
 5. Get All Words (Bases only).
 
-To manage linked objects, WordService should also use sub-entity services:
+Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Form-, Meaning-, and SynonymRepositories, with mostly the same methods.
 
-*MeaningService* (all internal)
+To be implemented in sub-entity repositories:
+
+*MeaningRepository*
 1. Create
 2. Get (by Word)
 3.~ Update
 4.~ Delete
 
-*SynonymService* (all internal)
+*SynonymRepository*
 1. Create
 2. Get (by Meaning)
 3.~ Update
 4.~ Delete
 
-Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Meaning-, and SynonymRepositories, with mostly the same methods.
+
 
 Concrete implementation of layers should be in-memory first (we might use this for tests anyway), and then a DB, e.g. SQLite.
