@@ -31,7 +31,7 @@ Fields:
 - Synonyms: an array of Synonym entities.
 
 *Synonym* includes
-- MainForm: how it is shown in GUI; the set of characters by which we then can find the corresponding Word, if there is one.
+- Base: Base of the corresponding Word, if there is one.
 - Word?: a link to the corresponding Word?
 
 === Feature I ('Service Layer') ===
