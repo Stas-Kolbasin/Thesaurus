@@ -9,25 +9,21 @@ The obvious entity a thesaurus has to work with is *Word*. The tricky part is th
 2) usually have multiple meanings, each with a distinct set of synonyms (_especially_ in English);
 2a) may be expressed as different parts of speech.
 
-This means we have to include word forms and meanings into the Word entity, for example as *Form* and *Meaning* sub-entities. Each Meaning necessarily corresponds to a certain *Part of Speech* (i.e. if a word can be interpreted as two different parts of speech, these two interpretations cannot have the same meaning). From parts of speech we should cover at least verb, noun, adverb, and adjective.
+As for word forms, online thesauri that I've checked (thesaurus.com, merriam-webster.com, collinsdictionary.com, dictionary.com, lexico.com, macmillandictionary.com) do not really support this. My guess is that people who use thesauri usually can write the word's base right. Anyway, supporting different forms doesn't seem absolutely necessary for MVP.
 
-*Synonym*, as it is another word with a close meaning, should be linked to a Meaning, not to a Word. It would make sense to implement Synonyms simply as links between Meanings, but this would make filling the Thesaurus difficult at first: to link a Meaning to a Synonym, we would have to first 'register' a Word for this Synonym. Thus Synonyms will be separate sub-entities; we will probably need to add search for their corresponding Words in future. At first it is OK if synonyms don't lead to registered Words.
+As for meanings, we absolutely have to include them into the Word entity, for example as *Meaning* sub-entities. Each Meaning necessarily corresponds to a certain *Part of Speech* (i.e. if a word can be interpreted as two different parts of speech, these two interpretations cannot have the same meaning). From parts of speech we should cover at least verb, noun, adverb, and adjective.
+
+*Synonym*, as it is another word with a close meaning, should be linked to a Meaning, not to a Word. It would make sense to implement Synonyms simply as links between Meanings, but this would make filling the Thesaurus difficult at first: to link a Meaning to a Synonym, we would have to first 'register' a Word for this Synonym. Thus Synonyms will be separate sub-entities; we will probably need to add search for their corresponding Words in future. Based on the main user stories, it is OK if synonyms don't lead to registered Words yet.
 
 === The domain ===
 
 *Word* is the main entity that contains
 - Base: the set of characters to which all the Meanings can be linked to, the header for all the word info in GUI. For example, all Meanings for 'a bow' and 'to bow' should be linked to a single Word with Base 'bow'.
-- Forms: an array of Forms entities.
 - Meanings: an array of Meaning entities.
-
-*Form* is an entity that describes one of the forms the word can take; e.g. for 'bow' it should include 'bow', 'bows', 'bowed', 'a bow', 'to bow', etc. Seems necessary for search purposes. Could be enough to simply put a string here, yet if the project is alive Form will inevitably be extended with metadata, such as describing the grammar of each form (e.g., 'bows' - noun plural and 'bowed' - verb's past tense).
-Fields:
-- FormText
 
 *Meaning* includes
 - Description: what this Meaning actually means.
 - PartOfSpeech: the part of speech this meaning is attributed to. E.g., for 'bow' meaning of 'a curved rod used to shoot projectiles' PartOfSpeech is Noun, for 'bend in waist' - Verb, etc.
-- MainForm?: Form entity used by default for this meaning. E.g. infinitive for verbs: 'bend in waist' should have MainForm 'to bow'.
 - Synonyms: an array of Synonym entities.
 
 *Synonym* includes
@@ -44,18 +40,10 @@ NB. Below is listed the functionality absolutely necessary for the user stories,
 1. Create Word (including linked Meanings, Forms, and Synonyms)
 2.~ Update Word
 3.~ Delete Word
-4. Get Word (by Form?) (including linked Meanings, Forms, and Synonyms)
-4a. (internal) Get Word (by Base)
-4b. (internal) Get Word (by ID)
+4. Get Word (by Base)
 5. Get All Words (Bases only).
 
 To manage linked objects, WordService should also use sub-entity services:
-*FormService* (all internal)
-1. Create Form
-2. Get Form (by Word)
-3. Get Form (by FormText)
-4.~ Update Form
-5.~ Delete Form 
 
 *MeaningService* (all internal)
 1. Create
@@ -69,6 +57,6 @@ To manage linked objects, WordService should also use sub-entity services:
 3.~ Update
 4.~ Delete
 
-Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Form-, Meaning-, and SynonymRepositories, with mostly the same methods.
+Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Meaning-, and SynonymRepositories, with mostly the same methods.
 
 Concrete implementation of layers should be in-memory first (we might use this for tests anyway), and then a DB, e.g. SQLite.
