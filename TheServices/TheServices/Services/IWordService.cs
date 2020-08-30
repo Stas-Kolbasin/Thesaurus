@@ -1,11 +1,12 @@
-﻿using TheServices.Models;
+﻿using System.Threading.Tasks;
+using TheServices.Models;
 
 namespace TheServices.Services
 {
     public interface IWordService
     {
-        void Create(Word word);
-        Word Get(string @base);
-        Word[] GetAll();
+        Task Create(Word word);
+        Task<Word> Get(string @base);
+        Task<Word[]> GetAll();
     }
 }

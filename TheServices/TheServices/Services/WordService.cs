@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using TheData;
 using TheData.Exceptions;
 using TheServices.Models;
@@ -14,12 +15,12 @@ namespace TheServices.Services
         public WordService(IWordRepository repository) =>
             _repository = repository;
 
-        public void Create(Word word)
+        public async Task Create(Word word)
         {
             var wordEntity = word.ToEntity();
             try
             {
-                _repository.Create(wordEntity);
+                await _repository.Create(wordEntity);
             }
             catch (RecordAlreadyExistsException<WordEntity> e)
             {
@@ -30,14 +31,14 @@ namespace TheServices.Services
             }
         }
 
-        public Word Get(string @base)
+        public async Task<Word> Get(string @base)
         {
-            return _repository.Get(@base).ToModel();
+            return (await _repository.Get(@base)).ToModel();
         }
 
-        public Word[] GetAll()
+        public async Task<Word[]> GetAll()
         {
-            return _repository.GetAll()
+            return (await _repository.GetAll())
                 .Select(entity => entity.ToModel())
                 .ToArray();
         }
