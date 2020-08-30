@@ -43,22 +43,15 @@ NB. Below is listed the functionality absolutely necessary for the user stories,
 4. Get Word (by Base)
 5. Get All Words (Bases only).
 
-Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Form-, Meaning-, and SynonymRepositories, with mostly the same methods.
+Underneath the service layer we implement the WordRepository, first in-memory (we will probably need this for tests anyway), and then in DB, such as SQLite.
 
-To manage linked objects, WordService should also use sub-entity services:
+In DB, Words don't even need a dedicated Primary Key: Base is literally what defines a word, thus we could always use this.
 
-*MeaningService* (all internal)
-1. Create
-2. Get (by Word)
-3.~ Update
-4.~ Delete
+It seems we really don't need separate services or repositories for sub-entities. Words can easily be saved as JSON documents including Meanings and Synonyms:
+* hardly ever will we need Meanings and Synonyms separately
+* this will make management of Words easier (especially editing sub-entities: just swap Word's JSONs)
+* caching will be easier, as we would just keep the whole Word data in one place (and invalidate it as a whole too)
 
-*SynonymService* (all internal)
-1. Create
-2. Get (by Meaning)
-3.~ Update
-4.~ Delete
-
-
-
-Concrete implementation of layers should be in-memory first (we might use this for tests anyway), and then a DB, e.g. SQLite.
+Potential problems (and why they are not so important):
+* concurrency-wise this could be more demanding; this is a lesser concern, Thesaurus will probably be mostly one-way: constantly reading data, sometimes adding new, and rarely editing
+* as data is very much denormalized, we will need more disk space; yet English has say 1M words - even if each entry takes 1KB, we will hardly have DB larger than 1GB. Something to think about with regards to SQLite, but not for production-scale DBMSs.
