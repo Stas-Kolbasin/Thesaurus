@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TheData;
 using TheData.Exceptions;
 using TheServices.Models;
@@ -31,12 +32,14 @@ namespace TheServices.Services
 
         public Word Get(string @base)
         {
-            throw new System.NotImplementedException();
+            return _repository.Get(@base).ToModel();
         }
 
         public Word[] GetAll()
         {
-            throw new System.NotImplementedException();
+            return _repository.GetAll()
+                .Select(entity => entity.ToModel())
+                .ToArray();
         }
     }
 }
