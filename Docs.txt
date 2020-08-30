@@ -37,11 +37,13 @@ A library that provides a service class for Word management.
 NB. Below is listed the functionality absolutely necessary for the user stories, _and_ some optional, marked by tildas.
 
 *WordService*
-1. Create Word (including linked Meanings, Forms, and Synonyms)
+1. Create Word (including linked Meanings and Synonyms)
 2.~ Update Word
 3.~ Delete Word
 4. Get Word (by Base)
 5. Get All Words (Bases only).
+
+Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Form-, Meaning-, and SynonymRepositories, with mostly the same methods.
 
 To manage linked objects, WordService should also use sub-entity services:
 
@@ -57,6 +59,6 @@ To manage linked objects, WordService should also use sub-entity services:
 3.~ Update
 4.~ Delete
 
-Underneath the service layer we implement an abstract persistence layer, e.g. Word-, Meaning-, and SynonymRepositories, with mostly the same methods.
+
 
 Concrete implementation of layers should be in-memory first (we might use this for tests anyway), and then a DB, e.g. SQLite.
