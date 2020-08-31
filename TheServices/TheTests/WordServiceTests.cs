@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TheData;
@@ -14,11 +13,11 @@ namespace TheTests
     public class WordServiceTests
     {
         private readonly IWordService _wordService;
-        private readonly FakeWordRepository _repository;
+        private readonly MemoryWordRepository _repository;
 
         public WordServiceTests()
         {
-            _repository = new FakeWordRepository();
+            _repository = new MemoryWordRepository();
             _wordService = new WordService(_repository);
         }
         
@@ -43,7 +42,7 @@ namespace TheTests
                 Base = @base
             };
 
-            await Assert.ThrowsAsync<RecordAlreadyExistsException<Word>>(
+            await Assert.ThrowsAsync<WordAlreadyExistsException>(
                 () => _wordService.Create(duplicate)
             );
         }
@@ -62,7 +61,7 @@ namespace TheTests
         [Fact]
         public async Task IfWordNotExistsThrowException()
         {
-            await Assert.ThrowsAsync<RecordNotFoundException>(
+            await Assert.ThrowsAsync<WordNotFoundException>(
                 () => _wordService.Get("tnetennba")
             );
         }
