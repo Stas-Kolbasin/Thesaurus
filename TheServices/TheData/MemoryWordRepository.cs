@@ -5,17 +5,17 @@ using TheData.Exceptions;
 
 namespace TheData
 {
-    public class FakeWordRepository : IWordRepository
+    public class MemoryWordRepository : IWordRepository
     {
         private readonly Dictionary<string, WordEntity> _words = new Dictionary<string, WordEntity>();
 
         public Task Create(WordEntity word)
         {
-            if (_words.TryGetValue(word.Base, out var existingWord))
+            if (_words.TryGetValue(word.Base, out _))
             {
-                throw new RecordAlreadyExistsException<WordEntity>
+                throw new WordAlreadyExistsException
                 {
-                    ExistingRecord = existingWord
+                    WordBase = word.Base
                 };
             }
             _words.Add(word.Base, word);
@@ -29,9 +29,9 @@ namespace TheData
                 return Task.FromResult(result);
             }
             
-            throw new RecordNotFoundException
+            throw new WordNotFoundException
             {
-                RecordKey = @base
+                WordBase = @base
             };
         }
 

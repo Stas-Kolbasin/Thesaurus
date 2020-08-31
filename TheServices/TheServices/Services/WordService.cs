@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using TheData;
 using TheData.Exceptions;
@@ -18,17 +17,7 @@ namespace TheServices.Services
         public async Task Create(Word word)
         {
             var wordEntity = word.ToEntity();
-            try
-            {
-                await _repository.Create(wordEntity);
-            }
-            catch (RecordAlreadyExistsException<WordEntity> e)
-            {
-                throw new RecordAlreadyExistsException<Word>(e)
-                {
-                    ExistingRecord = e.ExistingRecord.ToModel()
-                };
-            }
+            await _repository.Create(wordEntity);
         }
 
         public async Task<Word> Get(string @base)
