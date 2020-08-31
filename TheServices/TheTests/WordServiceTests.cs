@@ -1,4 +1,6 @@
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using TheData;
 using TheData.Exceptions;
 using TheServices.Enums;
@@ -21,64 +23,67 @@ namespace TheTests
         }
         
         [Fact]
-        public void CanCreateWord()
+        public async Task CanCreateWord()
         {
             var word = GetNewWord();
-            _wordService.Create(word);
+            await _wordService.Create(word);
 
-            var entity = _repository.Get(word.Base);
+            var entity = await _repository.Get(word.Base);
             Assert.Equal(word.Base, entity.Base);
         }
 
         [Fact]
-        public void CannotCreateExistingWord()
+        public async Task CannotCreateExistingWord()
         {
             string @base = "duplicate";
-            ArrangeWord(@base);
+            await ArrangeWord(@base);
             
             Word duplicate = new Word()
             {
                 Base = @base
             };
 
-            Assert.Throws<RecordAlreadyExistsException<Word>>(
+            await Assert.ThrowsAsync<RecordAlreadyExistsException<Word>>(
                 () => _wordService.Create(duplicate)
             );
         }
 
         [Fact]
-        public void CanGetExistingWord()
+        public async Task CanGetExistingWord()
         {
             string @base = "stash";
 
-            ArrangeWord(@base);
+            await ArrangeWord(@base);
 
-            var word = _wordService.Get(@base);
+            var word = await _wordService.Get(@base);
             Assert.Equal(@base, word.Base);
         }
 
         [Fact]
-        public void IfWordNotExistsThrowException()
+        public async Task IfWordNotExistsThrowException()
         {
-            Assert.Throws<RecordNotFoundException>(
+            await Assert.ThrowsAsync<RecordNotFoundException>(
                 () => _wordService.Get("tnetennba")
             );
         }
 
         [Fact]
-        public void IfNoWordsReturnEmptyArray()
+        public async Task IfNoWordsReturnEmptyArray()
         {
-            var words = _wordService.GetAll();
+            var words = await _wordService.GetAll();
             Assert.Empty(words);
         }
         
         [Fact]
-        public void CanGetAllWords()
+        public async Task CanGetAllWords()
         {
-            ArrangeWord("first");
-            ArrangeWord("second");
+            Task.WaitAll(
+                ArrangeWord("first"),
+                ArrangeWord("second")
+            );
 
-            var actualWords = _wordService.GetAll().OrderBy(w => w.Base);
+            var actualWords = (await _wordService.GetAll())
+                .OrderBy(w => w.Base);
 
             Assert.Collection(
                 actualWords,
@@ -119,10 +124,10 @@ namespace TheTests
             };
         }
 
-        private void ArrangeWord(string @base = "word")
+        private async Task ArrangeWord(string @base = "word")
         {
             var word = GetNewWord(@base);
-            _repository.Create(word.ToEntity());
+            await _repository.Create(word.ToEntity());
         }
     }
 }

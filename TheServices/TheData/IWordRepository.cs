@@ -1,15 +1,17 @@
-﻿namespace TheData
+﻿using System.Threading.Tasks;
+
+namespace TheData
 {
     public interface IWordRepository
     {
-        void Create(WordEntity word);
+        Task Create(WordEntity word);
 
-        WordEntity Get(string @base);
+        Task<WordEntity> Get(string @base);
 
-        WordEntity[] GetAll();
+        Task<WordEntity[]> GetAll();
 
-        void Edit(WordEntity wordEntity);
+        Task Edit(WordEntity wordEntity);
 
-        void Delete(string @base);
+        Task Delete(string @base);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TheData.Exceptions;
 
 namespace TheData
@@ -7,8 +8,8 @@ namespace TheData
     public class FakeWordRepository : IWordRepository
     {
         private readonly Dictionary<string, WordEntity> _words = new Dictionary<string, WordEntity>();
-        
-        public void Create(WordEntity word)
+
+        public Task Create(WordEntity word)
         {
             if (_words.TryGetValue(word.Base, out var existingWord))
             {
@@ -18,13 +19,14 @@ namespace TheData
                 };
             }
             _words.Add(word.Base, word);
+            return Task.CompletedTask;
         }
 
-        public WordEntity Get(string @base)
+        public Task<WordEntity> Get(string @base)
         {
             if(_words.TryGetValue(@base, out var result))
             {
-                return result;
+                return Task.FromResult(result);
             }
             
             throw new RecordNotFoundException
@@ -33,17 +35,19 @@ namespace TheData
             };
         }
 
-        public WordEntity[] GetAll()
+        public Task<WordEntity[]> GetAll()
         {
-            return _words.Values.ToArray();
+            return Task.FromResult(
+                _words.Values.ToArray()
+            );
         }
 
-        public void Edit(WordEntity wordEntity)
+        public Task Edit(WordEntity wordEntity)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(string @base)
+        public Task Delete(string @base)
         {
             throw new System.NotImplementedException();
         }
