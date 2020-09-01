@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using TheData;
 using TheData.Exceptions;
 using TheServices.Enums;
@@ -25,26 +26,32 @@ namespace TheTests
         public async Task CanCreateWord()
         {
             var word = GetNewWord();
-            await _wordService.Create(word);
+            await _wordService.Save(word);
 
             var entity = await _repository.Get(word.Base);
             Assert.Equal(word.Base, entity.Base);
         }
 
         [Fact]
-        public async Task CannotCreateExistingWord()
+        public async Task CanUpdateExistingWord()
         {
             string @base = "duplicate";
             await ArrangeWord(@base);
-            
-            Word duplicate = new Word()
+
+            string newDescription = "Something completely different.";
+            Word duplicate = new Word
             {
-                Base = @base
+                Base = @base,
+                Meanings = new []
+                {
+                    new Meaning { Description = newDescription}
+                }
             };
 
-            await Assert.ThrowsAsync<WordAlreadyExistsException>(
-                () => _wordService.Create(duplicate)
-            );
+            await _wordService.Save(duplicate);
+
+            var updatedWord = (await _repository.Get(@base)).ToModel();
+            Assert.Equal(newDescription, updatedWord.Meanings[0].Description);
         }
 
         [Fact]
@@ -126,7 +133,7 @@ namespace TheTests
         private async Task ArrangeWord(string @base = "word")
         {
             var word = GetNewWord(@base);
-            await _repository.Create(word.ToEntity());
+            await _repository.Save(word.ToEntity());
         }
     }
 }

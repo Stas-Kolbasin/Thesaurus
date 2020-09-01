@@ -9,16 +9,9 @@ namespace TheData
     {
         private readonly Dictionary<string, WordEntity> _words = new Dictionary<string, WordEntity>();
 
-        public Task Create(WordEntity word)
+        public Task Save(WordEntity word)
         {
-            if (_words.TryGetValue(word.Base, out _))
-            {
-                throw new WordAlreadyExistsException
-                {
-                    WordBase = word.Base
-                };
-            }
-            _words.Add(word.Base, word);
+            _words[word.Base] = word;
             return Task.CompletedTask;
         }
 
