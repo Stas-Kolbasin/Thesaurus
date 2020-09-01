@@ -14,10 +14,10 @@ namespace TheServices.Services
         public WordService(IWordRepository repository) =>
             _repository = repository;
 
-        public async Task Create(Word word)
+        public async Task Save(Word word)
         {
             var wordEntity = word.ToEntity();
-            await _repository.Create(wordEntity);
+            await _repository.Save(wordEntity);
         }
 
         public async Task<Word> Get(string @base)

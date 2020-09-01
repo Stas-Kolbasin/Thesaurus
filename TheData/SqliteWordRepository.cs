@@ -26,27 +26,15 @@ namespace TheData
             }
         }
         
-        public async Task Create(WordEntity word)
+        public async Task Save(WordEntity word)
         {
             using (var connection = CreateConnection())
             {
-                try
-                {
-                    await connection.ExecuteAsync(
-                        @"insert into Words(Base, Data) values(@Base, @Data)",
-                        word
-                    );
-                }
-                catch (SQLiteException ex)
-                {
-                    if (ex.Message.Contains("UNIQUE constraint failed"))
-                    {   
-                        throw new WordAlreadyExistsException
-                        {
-                            WordBase = word.Base
-                        };
-                    }
-                }
+                await connection.ExecuteAsync(
+                    @"insert into Words(Base, Data) values(@Base, @Data)
+                          on conflict do update set Data = @Data",
+                    word
+                );
             }
         }
 
