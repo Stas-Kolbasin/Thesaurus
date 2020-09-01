@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TheData.Exceptions;
 using TheServices.Models;
 using TheServices.Services;
 
@@ -22,9 +23,16 @@ namespace TheApi.Controllers
 
         [HttpGet]
         [Route("{base}")]
-        public async Task<Word> Get(string @base)
+        public async Task<ActionResult<Word>> Get(string @base)
         {
-            return await _wordService.Get(@base);
+            try
+            {
+                return await _wordService.Get(@base);
+            }
+            catch (WordNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]

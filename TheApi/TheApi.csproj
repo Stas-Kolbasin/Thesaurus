@@ -8,5 +8,9 @@
       <ProjectReference Include="..\TheServices\TheServices.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="5.1.1" />
+    </ItemGroup>
+
 
 </Project>
