@@ -30,7 +30,7 @@ namespace TheApi.Controllers
         [HttpPost]
         public async Task Upsert(Word word)
         {
-            await _wordService.Create(word);
+            await _wordService.Save(word);
         }
     }
 }
