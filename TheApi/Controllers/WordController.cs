@@ -16,7 +16,7 @@ namespace TheApi.Controllers
             _wordService = wordService;
         
         [HttpGet]
-        public async Task<Word[]> GetAll()
+        public async Task<string[]> GetAll()
         {
             return await _wordService.GetAll();
         }
