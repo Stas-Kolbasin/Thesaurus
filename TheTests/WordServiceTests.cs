@@ -98,6 +98,21 @@ namespace TheTests
             );
         }
 
+        [Fact]
+        public async Task GetAllOrdersWords()
+        {
+            Task.WaitAll(
+                ArrangeWord("coffee"),
+                ArrangeWord("beans"),
+                ArrangeWord("alfalfa")
+            );
+
+            var actualWords = await _wordService.GetAll();
+            Assert.Equal("alfalfa", actualWords[0]);
+            Assert.Equal("beans", actualWords[1]);
+            Assert.Equal("coffee", actualWords[2]);
+        }
+
         private Word GetNewWord(string @base = "word")
         {
             return new Word

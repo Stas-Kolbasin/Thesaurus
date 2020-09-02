@@ -31,7 +31,9 @@ namespace TheData
         public Task<string[]> GetAll()
         {
             return Task.FromResult(
-                _words.Keys.ToArray()
+                _words.Keys
+                    .OrderBy(key => key)
+                    .ToArray()
             );
         }
 

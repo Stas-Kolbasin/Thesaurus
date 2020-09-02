@@ -65,7 +65,7 @@ namespace TheData
             {
                 var words = await connection
                     .QueryAsync<string>(
-                        "select base from Words"
+                        "select base from Words order by base"
                     );
                 return words.ToArray();
             }
