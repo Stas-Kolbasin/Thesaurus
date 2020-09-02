@@ -32,7 +32,7 @@ namespace TheData
             {
                 await connection.ExecuteAsync(
                     @"insert into Words(Base, Data) values(@Base, @Data)
-                          on conflict do update set Data = @Data",
+                          on conflict(Base) do update set Data = @Data",
                     word
                 );
             }
