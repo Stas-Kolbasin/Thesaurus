@@ -30,7 +30,7 @@ namespace TheApi
         {
             services.AddTransient<IWordRepository, SqliteWordRepository>();
             services.AddTransient<IWordService, WordService>();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddProblemDetails();
         }
 
