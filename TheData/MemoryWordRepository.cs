@@ -28,10 +28,10 @@ namespace TheData
             };
         }
 
-        public Task<WordEntity[]> GetAll()
+        public Task<string[]> GetAll()
         {
             return Task.FromResult(
-                _words.Values.ToArray()
+                _words.Keys.ToArray()
             );
         }
 

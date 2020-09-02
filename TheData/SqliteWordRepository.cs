@@ -59,21 +59,16 @@ namespace TheData
             }
         }
 
-        public async Task<WordEntity[]> GetAll()
+        public async Task<string[]> GetAll()
         {
             using (var connection = CreateConnection())
             {
                 var words = await connection
-                    .QueryAsync<WordEntity>(
-                        "select * from Words"
+                    .QueryAsync<string>(
+                        "select base from Words"
                     );
                 return words.ToArray();
             }
-        }
-
-        public Task Edit(WordEntity wordEntity)
-        {
-            throw new System.NotImplementedException();
         }
 
         public Task Delete(string @base)

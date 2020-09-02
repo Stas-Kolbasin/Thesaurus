@@ -89,12 +89,12 @@ namespace TheTests
             );
 
             var actualWords = (await _wordService.GetAll())
-                .OrderBy(w => w.Base);
+                .OrderBy(w => w);
 
             Assert.Collection(
                 actualWords,
-                first => Assert.Equal("first", first.Base),
-                second => Assert.Equal("second", second.Base)
+                first => Assert.Equal("first", first),
+                second => Assert.Equal("second", second)
             );
         }
 

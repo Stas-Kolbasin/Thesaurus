@@ -25,11 +25,9 @@ namespace TheServices.Services
             return (await _repository.Get(@base)).ToModel();
         }
 
-        public async Task<Word[]> GetAll()
+        public async Task<string[]> GetAll()
         {
-            return (await _repository.GetAll())
-                .Select(entity => entity.ToModel())
-                .ToArray();
+            return await _repository.GetAll();
         }
     }
 }

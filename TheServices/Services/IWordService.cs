@@ -7,6 +7,6 @@ namespace TheServices.Services
     {
         Task Save(Word word);
         Task<Word> Get(string @base);
-        Task<Word[]> GetAll();
+        Task<string[]> GetAll();
     }
 }
