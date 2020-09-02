@@ -8,7 +8,7 @@ namespace TheData
 
         Task<WordEntity> Get(string @base);
 
-        Task<WordEntity[]> GetAll();
+        Task<string[]> GetAll();
 
         Task Delete(string @base);
     }
