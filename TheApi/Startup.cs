@@ -44,7 +44,12 @@ namespace TheApi
 
             app.UseRouting();
             
-            app.UseCors(builder => builder.AllowAnyOrigin());
+            app.UseCors(
+                builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.WithHeaders("Content-Type");
+                });
 
             app.UseAuthorization();
 
