@@ -36,9 +36,13 @@ namespace TheApi.Controllers
         }
 
         [HttpPost]
-        public async Task Upsert(Word word)
+        public async Task<ActionResult> Upsert(Word word)
         {
+            if (string.IsNullOrWhiteSpace(word.Base))
+                return BadRequest("Nonono, please enter a word.");
+                
             await _wordService.Save(word);
+            return Ok();
         }
     }
 }
